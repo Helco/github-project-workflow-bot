@@ -37,7 +37,7 @@ async function findProjectCards(context: Context, issueNumber: number): Promise<
       if (cards.status != 200)
         continue;
       for (const card of cards.data) {
-        if (card.content_url.endsWith("/issues/" + issueNumber))
+        if (typeof(card.content_url) === "string" && card.content_url.endsWith("/issues/" + issueNumber))
         {
           result.push({
             project_id: project.id,
