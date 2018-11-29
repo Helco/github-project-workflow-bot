@@ -1,5 +1,4 @@
 import { Application, Context } from 'probot' // eslint-disable-line no-unused-vars
-import { ProjectsGetCardParams } from '@octokit/rest';
 
 function extractIssueNumber(app: Application, payload: any): number {
   if (typeof(payload) !== "object" ||
@@ -24,7 +23,7 @@ async function findProjectCards(context: Context, issueNumber: number): Promise<
   const projects = await context.github.projects.listForRepo(context.repo());
   if (projects.status != 200)
     return [];
-  var result: CardRef[] = [];
+  let result: CardRef[] = [];
   for (const project of projects.data) {
     const columns = await context.github.projects.listColumns({ project_id: project.id });
     if (columns.status != 200)

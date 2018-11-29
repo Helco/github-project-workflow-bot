@@ -6,8 +6,8 @@ import nock from 'nock'
 import myProbotApp from '../src'
 import { Probot } from 'probot'
 // Requiring our fixtures
-import payload from './fixtures/issues.opened.json'
-const issueCreatedBody = { body: 'Thanks for opening this issue!' }
+//import payload from './fixtures/issues.opened.json'
+//const issueCreatedBody = { body: 'Thanks for opening this issue!' }
 
 nock.disableNetConnect()
 
@@ -23,7 +23,7 @@ describe('My Probot app', () => {
     app.app = () => 'test'
   })
 
-  test('creates a comment when an issue is opened', async (done) => {
+  /*test('creates a comment when an issue is opened', async (done) => {
     // Test that we correctly return a test token
     nock('https://api.github.com')
       .post('/app/installations/2/access_tokens')
@@ -39,7 +39,7 @@ describe('My Probot app', () => {
 
     // Receive a webhook event
     await probot.receive({ name: 'issues', payload })
-  })
+  })*/
 })
 
 // For more information about testing with Jest see:
