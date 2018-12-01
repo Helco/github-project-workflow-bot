@@ -37,6 +37,7 @@ export class ConfigTransactionalMessageReporter implements IConfigMessageReporte
 
     public reset(): void {
         this.messages.splice(0);
+        this.didHaveErrors = false;
     }
 
     public commit(): void {

@@ -15,22 +15,23 @@ export class ConfigContextMapping {
         if (typeof alias === "string")
             alias = [alias];
         for (const name of alias) {
+            if (!this.isIdentifier(name))
+                throw new Error(`Invalid property name \"${name}\"`);
             if (this.properties.has(name))
                 throw new Error(`Mapping for \"${name} is already set`);
             this.properties.set(name, type);
         }
     }
 
-    public setParameters(line: string): void {
+    private isIdentifier(name: string): boolean {
+        return /^[a-zA-Z_][\w]*$/.exec(name) !== null;
+    }
+
+    public setParameters(list: string[]): void {
         this.checkSeal();
         if (this.parameters.length > 0)
             throw new Error("Parameter line has already been set");
-        const PATTERN = /(\w+|\[\w+\])(\s+|$)/g;
-        let parameterMatch = PATTERN.exec(line);
-        while (parameterMatch !== null) {
-            this.addParameter(parameterMatch[1]);
-            parameterMatch = PATTERN.exec(line);
-        }
+        list.forEach((param) => this.addParameter(param));
         if (this.parameters.length == 0)
             throw new Error("Invalid parameter line");
     }
@@ -40,6 +41,8 @@ export class ConfigContextMapping {
         const name = isOptional
             ? param.slice(1, -1)
             : param;
+        if (!this.hasProperty(name))
+            throw new Error(`Invalid parameter property \"${name}\"`);
         this.parameters.push({ name, isOptional });
     }
 
@@ -59,6 +62,11 @@ export class ConfigContextMapping {
         return this.properties.has(name);
     }
 
+    public getMinParameterCount(): number {
+        return this.parameters.length -
+            this.countOptionalParameters(0, this.properties.size);
+    }
+
     public getMaxParameterCount(): number {
         return this.parameters.length;
     }
@@ -73,14 +81,13 @@ export class ConfigContextMapping {
     /**
      * @returns possible property names in order
      */
-    public byParameterIndex(index: number): string[] {
-        if (index < 0 || index >= this.parameters.length)
+    public byParameterIndex(actualI: number): string[] {
+        if (actualI < 0 || actualI >= this.parameters.length)
             throw new Error("index out of bounds");
-        const min = index - this.countOptionalParameters(0, index);
-        const max = index + this.countOptionalParametersSequence(index);
-        return this.parameters
-            .slice(min, max + 1)
-            .map(param => param.name);
+        return this.parameters.filter((_, paramI) => {
+            const left = paramI - this.countOptionalParameters(0, paramI);
+            return (left <= actualI && actualI <= paramI);
+        }).map(param => param.name);
     }
 
     public parameterProperties(): string[] {
@@ -92,13 +99,5 @@ export class ConfigContextMapping {
             .slice(from, to)
             .filter(param => param.isOptional)
             .length;
-    }
-
-    private countOptionalParametersSequence(from: number): number {
-        const firstRequired = this.parameters
-            .findIndex((param, i) => i >= from && !param.isOptional);
-        return firstRequired < 0
-            ? this.parameters.length - from
-            : firstRequired - from;
     }
 }

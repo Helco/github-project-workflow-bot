@@ -44,7 +44,7 @@ export abstract class ConfigContextMap implements IConfigContext {
     }
 
     private acceptByParameters(parameterLine: string, reporter: IConfigMessageReporter): void{
-        const lastAccepted: string = "";
+        let lastAccepted: string = "";
         this.splitParameters(parameterLine, reporter).forEach((paramValue, i) => {
             const possibleProperties = this.filterParameterProperties(
                 this.mapping.byParameterIndex(i), lastAccepted);
@@ -56,8 +56,10 @@ export abstract class ConfigContextMap implements IConfigContext {
             });
             if (typeof acceptedName === "undefined")
                 reporter.reportError("Could not find matching parameter", paramValue);
-            else
+            else {
                 this.acceptProperty(acceptedName, paramValue, reporter);
+                lastAccepted = acceptedName;
+            }
         });
         this.acceptMap(this.values, reporter);
     }
@@ -84,7 +86,8 @@ export abstract class ConfigContextMap implements IConfigContext {
         let match = PARAM_PATTERN.exec(line);
         while (match !== null) {
             lastIndex = PARAM_PATTERN.lastIndex;
-            parameters.push(this.unescapeParameter(match[1]));
+            const value = match[1] || match[2];
+            parameters.push(this.unescapeParameter(value));
             match = PARAM_PATTERN.exec(line);
         }
         if (line.substr(lastIndex).match(/[^\s]/) !== null)
@@ -120,6 +123,9 @@ export abstract class ConfigContextMap implements IConfigContext {
     }
 
     public getValue() {
-        return this.values;
+        const value = new Map<string, any>();
+        for (const pair of this.values)
+            value.set(pair[0], pair[1].getValue());
+        return value;
     }
 }
