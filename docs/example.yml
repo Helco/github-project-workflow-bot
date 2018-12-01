@@ -1,0 +1,24 @@
+when:
+  - pull_request.opened or pull_request.edited or pull_request.reopened:
+      with reference: Fixes $issue
+      do: replace_card $issue $this
+  - issues.closed:
+      find:
+        - issue: $issue.blocking
+          with reference: Blocked by $this
+      do:
+        - find:
+          target: $issue.blocking
+          with reference: Blocked by $this
+        - remove_label $issue.blocking "BLOCKED"
+  - issues.opened: create_card $this "To do"
+  - issues.assigned: move_card $this "In progress"
+  - pull_request.review_requested: move_card $this "Needs review"
+  - issues.closed: move_card $this "Done"
+for:
+  in_project: "Mission-critical"
+  annotation: "Mission-critical"
+config:
+  default_project: Meistertask
+  move_can_create: true
+  check_pull_request_syntax: true
