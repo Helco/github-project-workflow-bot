@@ -1,7 +1,7 @@
-import { IConfigContext } from "./IConfigContext";
-import { IConfigMessageReporter } from "./IConfigMessageReporter";
-import { ConfigContextMapping } from "./ConfigContextMapping";
-import { ConfigTransactionalMessageReporter } from "./ConfigTransactionalMessageReporter";
+import { IConfigContext } from "./";
+import { IConfigMessageReporter } from "./";
+import { ConfigContextMapping } from "./";
+import { ConfigTransactionalMessageReporter } from "./";
 
 export abstract class ConfigContextMap implements IConfigContext {
     protected abstract readonly mapping: ConfigContextMapping;

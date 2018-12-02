@@ -1,5 +1,5 @@
-import { IConfigContext, ConfigContextType } from './IConfigContext';
-import { IConfigMessageReporter } from './IConfigMessageReporter';
+import { IConfigContext, ConfigContextType } from './';
+import { IConfigMessageReporter } from './';
 
 export abstract class ConfigContextList<T extends IConfigContext> implements IConfigContext
 {

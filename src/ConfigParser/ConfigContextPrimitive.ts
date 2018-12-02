@@ -1,5 +1,5 @@
 import { IConfigMessageReporter } from './IConfigMessageReporter';
-import { IConfigContext } from "./IConfigContext";
+import { IConfigContext } from "./";
 
 export abstract class ConfigContextNumber implements IConfigContext {
     protected value: number = Number.NaN;

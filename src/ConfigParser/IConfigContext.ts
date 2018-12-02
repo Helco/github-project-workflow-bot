@@ -1,4 +1,4 @@
-import { IConfigMessageReporter } from "./IConfigMessageReporter";
+import { IConfigMessageReporter } from "./";
 
 export interface IConfigContext {
     accept(value: any, reporter: IConfigMessageReporter): void;

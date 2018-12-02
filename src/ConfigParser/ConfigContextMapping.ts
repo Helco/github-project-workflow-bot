@@ -1,4 +1,4 @@
-import { ConfigContextAnyType } from "./IConfigContext";
+import { ConfigContextAnyType } from "./";
 
 type ConfigContextMapParameter = {
     name: string;

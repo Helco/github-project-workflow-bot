@@ -1,4 +1,4 @@
-import { IConfigMessageReporter } from "./IConfigMessageReporter";
+import { IConfigMessageReporter } from "./";
 
 type TransactionalMessage = {
     reportFunction: (message: string, context?: any) => void;
