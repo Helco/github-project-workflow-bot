@@ -1,4 +1,4 @@
-# github-project-workflow-bot
+# github-project-workflow-bot [![Build Status](https://travis-ci.com/Helco/github-project-workflow-bot.svg?branch=master)](https://travis-ci.com/Helco/github-project-workflow-bot)
 
 > A GitHub App built with [Probot](https://github.com/probot/probot) to Automate your github project workflow more.
 > Currently this means replacing an issue in a project for which a fixing pull request is opened.
