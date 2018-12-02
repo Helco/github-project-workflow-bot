@@ -8,7 +8,7 @@ import {
     ConfigContextBoolean,
     IConfigMessageReporter
 } from "../../src/ConfigParser";
-import { OtherTypeValues } from "./TypeValues";
+import { OtherTypeValues } from "../TypeValues";
 
 describe("ConfigContextNumber", () => {
     test("does accept correct values", () => {

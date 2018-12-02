@@ -3,12 +3,8 @@ when:
       with reference: Fixes $issue
       do: replace_card $issue $this
   - issues.closed:
-      find:
-        - issue: $issue.blocking
-          with reference: Blocked by $this
       do:
-        - find:
-          target: $issue.blocking
+        - find: $issue.blocking
           with reference: Blocked by $this
         - remove_label $issue.blocking "BLOCKED"
   - issues.opened: create_card $this "To do"

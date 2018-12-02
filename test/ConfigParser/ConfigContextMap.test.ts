@@ -1,5 +1,5 @@
 import { ConfigContextMap, IConfigMessageReporter, IConfigContext, ConfigContextMapping, ConfigContextAnyNumber, ConfigContextAnyBoolean, ConfigContextAnyString } from "../../src/ConfigParser";
-import { OtherTypeValues } from "./TypeValues";
+import { OtherTypeValues } from "../TypeValues";
 import { MockedConfigMessageReporter } from "./MockedConfigMessageReporter";
 
 describe("ConfigContextMap", () => {

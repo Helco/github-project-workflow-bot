@@ -1,6 +1,6 @@
 import { ConfigContextList, ConfigContextAnyNumber, IConfigMessageReporter } from "../../src/ConfigParser";
 import { MockedConfigMessageReporter } from "./MockedConfigMessageReporter";
-import { OtherTypeValues } from "./TypeValues";
+import { OtherTypeValues } from "../TypeValues";
 
 describe("ConfigContextList", () => {
     class TestConfigContextNumberList extends ConfigContextList<ConfigContextAnyNumber> {
