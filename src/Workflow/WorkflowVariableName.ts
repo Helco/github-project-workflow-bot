@@ -26,7 +26,10 @@ export class WorkflowVariableName {
         const parts = PATTERN.exec(full);
         if (parts === null)
             throw new Error(`Invalid variable name \"${full}\"`);
-        return new WorkflowVariableName(parts[1] || "", parts[2] || "", parts[3]);
+        return new WorkflowVariableName(
+            (parts[1] && parts[1].slice(0, -1)) || "",
+            (parts[2] && parts[2].slice(0, -1)) || "",
+            parts[3]);
     }
 
     public static fromComponents(member: string, namespace?: string, type?: string): WorkflowVariableName {

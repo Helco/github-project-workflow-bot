@@ -41,7 +41,7 @@ export class Workflow {
             const context = this.createContext(reporter);
             const step = this.steps[this.currentStep];
             await step.run(context);
-            
+
             if (!this.handleStepError(step, stepReporter)) {
                 reporter.reportInfo("Workflow was cancelled");
                 return;
