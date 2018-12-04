@@ -1,12 +1,12 @@
 when:
   - pull_request.opened or pull_request.edited or pull_request.reopened:
-      with reference: Fixes $issue
-      do: replace_card $issue $this
+      with reference: Fixes $issue:fixing
+      do: replace_card $issue:fixing $this
   - issues.closed:
       do:
-        - find: $issue.blocking
+        - find: $issue:blocking
           with reference: Blocked by $this
-        - remove_label $issue.blocking "BLOCKED"
+        - remove_label $issue:blocking "BLOCKED"
   - issues.opened: create_card $this "To do"
   - issues.assigned: move_card $this "In progress"
   - pull_request.review_requested: move_card $this "Needs review"
