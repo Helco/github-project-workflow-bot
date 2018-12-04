@@ -38,12 +38,12 @@ export class Workflow {
         reporter.reportInfo("Workflow started");
         for (this.currentStep = 0; this.currentStep < this.steps.length; this.currentStep++) {
             const stepReporter = new WorkflowTransactionalMessageReporter(reporter);
-            const context = this.createContext(reporter);
+            const context = this.createContext(stepReporter);
             const step = this.steps[this.currentStep];
             await step.run(context);
 
             if (!this.handleStepError(step, stepReporter)) {
-                reporter.reportInfo("Workflow was cancelled");
+                reporter.reportError("Workflow was cancelled");
                 return;
             }
         }
@@ -61,8 +61,9 @@ export class Workflow {
         if (stepReporter.hasErrors()) {
             if (step.errorBehaviour.shouldReport)
                 stepReporter.commit();
+            return step.errorBehaviour.shouldContinue;
         }
-        return step.errorBehaviour.shouldContinue;
+        return true;
     }
 
     public hasStarted(): boolean
