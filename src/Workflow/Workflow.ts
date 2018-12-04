@@ -1,5 +1,5 @@
 import { WorkflowTransactionalMessageReporter } from './WorkflowTransactionalMessageReporter';
-import { IWorkflowAction, IWorkflowContext, WorkflowVariableSet, IWorkflowMessageReporter } from ".";
+import { IWorkflowStep, IWorkflowContext, WorkflowVariableSet, IWorkflowMessageReporter } from ".";
 
 class Context implements IWorkflowContext {
     public readonly workflow: Workflow;
@@ -13,15 +13,15 @@ class Context implements IWorkflowContext {
 }
 
 export class Workflow {
-    private steps: IWorkflowAction[] = [];
+    private steps: IWorkflowStep[] = [];
     private isSealed = false;
     private currentStep: number = -1;
 
-    public addStep(action: IWorkflowAction): void
+    public addStep(step: IWorkflowStep): void
     {
         if (this.isSealed)
             throw new Error("Workflow is sealed, no modifications are allowed");
-        this.steps.push(action);
+        this.steps.push(step);
     }
 
     public seal(): void
@@ -57,7 +57,7 @@ export class Workflow {
     /**
      * @returns true if the workflow should continue
      */
-    private handleStepError(step: IWorkflowAction, stepReporter: WorkflowTransactionalMessageReporter): boolean {
+    private handleStepError(step: IWorkflowStep, stepReporter: WorkflowTransactionalMessageReporter): boolean {
         if (stepReporter.hasErrors()) {
             if (step.errorBehaviour.shouldReport)
                 stepReporter.commit();

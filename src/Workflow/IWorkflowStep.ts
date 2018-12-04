@@ -4,7 +4,7 @@ interface ErrorBehaviourOpts {
     readonly shouldContinue: boolean;
     readonly shouldReport: boolean;
 }
-export class WorkflowActionErrorBehaviour implements ErrorBehaviourOpts {
+export class WorkflowStepErrorBehaviour implements ErrorBehaviourOpts {
     public readonly shouldContinue: boolean;
     public readonly shouldReport: boolean;
 
@@ -14,29 +14,29 @@ export class WorkflowActionErrorBehaviour implements ErrorBehaviourOpts {
     }
 
     public static get Cancel() {
-        return new WorkflowActionErrorBehaviour({
+        return new WorkflowStepErrorBehaviour({
             shouldContinue: false,
             shouldReport: true
         });
     }
 
     public static get CancelSilently() {
-        return new WorkflowActionErrorBehaviour({
+        return new WorkflowStepErrorBehaviour({
             shouldContinue: false,
             shouldReport: false
         });
     }
 
     public static get Ignore() {
-        return new WorkflowActionErrorBehaviour({
+        return new WorkflowStepErrorBehaviour({
             shouldContinue: true,
             shouldReport: true
         });
     }
 }
 
-export interface IWorkflowAction {
+export interface IWorkflowStep {
     readonly debugName: string;
-    readonly errorBehaviour : WorkflowActionErrorBehaviour;
+    readonly errorBehaviour : WorkflowStepErrorBehaviour;
     run(context: IWorkflowContext): Promise<void>;
 }
