@@ -17,18 +17,20 @@ export type IWorkflowVariableType = IWorkflowTypedVariableType<any>;
 
 export class WorkflowTypedVariable<T> {
     private value: T;
-    private name: WorkflowVariableName;
 
     public readonly type: IWorkflowTypedVariableType<T>;
+    public readonly name: WorkflowVariableName;
 
-    public constructor(type: IWorkflowTypedVariableType<T>, name: WorkflowVariableName, value: T) {
+    public constructor(type: IWorkflowTypedVariableType<T>, name: string | WorkflowVariableName, value: T) {
+        if (typeof name === "string")
+            name = WorkflowVariableName.fromFull(name);
+        if (name.type !== "" && name.type !== type.name)
+            throw new Error("Type from variable name does not match given type");
         this.type = type;
-        this.name = name;
+        this.name = WorkflowVariableName.fromComponents(
+            name.member, name.namespace, type.name
+        );
         this.value = value;
-    }
-
-    public getName(): WorkflowVariableName {
-        return this.name;
     }
 
     public getFullName(): string {

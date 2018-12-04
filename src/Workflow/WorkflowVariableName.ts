@@ -16,7 +16,9 @@ export class WorkflowVariableName {
         this.full = "$" + (type == "" ? "" : type + ":") + this.globalName;
     }
 
-    public equals(other: WorkflowVariableName): boolean {
+    public equals(other: string | WorkflowVariableName): boolean {
+        if (typeof other === "string")
+            other = WorkflowVariableName.fromFull(other);
         return this.globalName === other.globalName;
     }
 

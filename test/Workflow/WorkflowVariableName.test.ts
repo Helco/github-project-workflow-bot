@@ -69,14 +69,18 @@ describe("WorkflowVariablename", () => {
         const nameFromComponents = WorkflowVariableName.fromComponents("ghi", "def", "abc");
         const nameOtherType = WorkflowVariableName.fromFull("$XYZ:def.ghi");
         const nameOtherNamespace = WorkflowVariableName.fromFull("$abc:XYZ.ghi");
+        const nameWithoutType = WorkflowVariableName.fromFull("$def.ghi");
         const otherName = WorkflowVariableName.fromFull("$abc:def.XYZ");
 
         expect(nameFromFull.equals(nameFromComponents)).toBe(true);
         expect(nameFromComponents.equals(nameFromFull)).toBe(true);
+        expect(nameFromFull.equals(nameWithoutType)).toBe(true);
+        expect(nameFromComponents.equals(nameWithoutType)).toBe(true);
         expect(nameOtherType.equals(nameFromFull)).toBe(true);
         expect(nameFromFull.equals(nameOtherNamespace)).toBe(false);
         expect(nameOtherNamespace.equals(nameFromFull)).toBe(false);
         expect(nameFromComponents.equals(otherName)).toBe(false);
         expect(nameFromFull.equals(otherName)).toBe(false);
+        expect(nameFromComponents.equals("$abc:def.ghi")).toBe(true);
     });
 });
